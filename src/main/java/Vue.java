@@ -9,7 +9,8 @@ import java.io.InputStreamReader;
 public class Vue extends JPanel implements ActionListener {
     final int SONG_PANEL_INDEX = 0;
     final int ALBUM_PANEL_INDEX = 1;
-    final int PLAYLIST_PANEL_INDEX = 2;
+    final int ARTIST_PANEL_INDEX = 2;
+    final int PLAYLIST_PANEL_INDEX = 3;
 
     final int MP3_INDEX = 0;
     final int M4A_INDEX = 1;
@@ -20,22 +21,22 @@ public class Vue extends JPanel implements ActionListener {
     JTabbedPane modeSelector;
 
     JPanel dlFromSongPanel;
-
     JLabel artistLabel;
     JTextArea artistField;
-
     JLabel songLabel;
     JTextArea songField;
 
     JPanel dlFromPlaylistPanel;
-
     JLabel playlistURLLabel;
     JTextArea playlistURLField;
 
     JPanel dlFromAlbumPanel;
-
     JLabel albumURLLabel;
     JTextArea albumURLField;
+
+    JPanel dlFromArtistPanel;
+    JLabel artistURLLabel;
+    JTextArea artistURLField;
 
     JPanel moreOptionsPanel;
 
@@ -70,6 +71,7 @@ public class Vue extends JPanel implements ActionListener {
     private void initModeSelector() {
         initSongPanel();
         initAlbumPanel();
+        initArtistPanel();
         initPlaylistPanel();
 
         modeSelector = new JTabbedPane();
@@ -77,6 +79,7 @@ public class Vue extends JPanel implements ActionListener {
 
         modeSelector.addTab("DL From Song", dlFromSongPanel);
         modeSelector.addTab("DL From Album", dlFromAlbumPanel);
+        modeSelector.addTab("DL From Artist (all albums)", dlFromArtistPanel);
         modeSelector.addTab("DL From Playlist", dlFromPlaylistPanel);
     }
 
@@ -86,11 +89,11 @@ public class Vue extends JPanel implements ActionListener {
         dlFromSongPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         dlFromSongPanel.setLayout(new GridLayout(2,2, 5,5));
 
-        artistLabel = new JLabel("Nom de l'artiste : ");
+        artistLabel = new JLabel("Artist's name : ");
         artistLabel.setHorizontalTextPosition(JLabel.CENTER);
         artistField = new JTextArea();
 
-        songLabel = new JLabel("Titre de la chanson : ");
+        songLabel = new JLabel("Song's title : ");
         songLabel.setHorizontalTextPosition(JLabel.CENTER);
         songField = new JTextArea();
 
@@ -112,6 +115,20 @@ public class Vue extends JPanel implements ActionListener {
 
         dlFromAlbumPanel.add(albumURLLabel);
         dlFromAlbumPanel.add(albumURLField);
+    }
+
+    private void initArtistPanel() {
+        dlFromArtistPanel = new JPanel();
+        dlFromArtistPanel.setBackground(Color.magenta);
+        dlFromArtistPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        dlFromArtistPanel.setLayout(new GridLayout(1,2, 5,5));
+
+        artistURLLabel = new JLabel("URL Spotify de l'artiste (tous les albums seront téléchargés) : ");
+        artistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
+        artistURLField = new JTextArea();
+
+        dlFromArtistPanel.add(albumURLLabel);
+        dlFromArtistPanel.add(albumURLField);
     }
 
     private void initPlaylistPanel() {
@@ -186,50 +203,57 @@ public class Vue extends JPanel implements ActionListener {
         extensionPanel.add(extensionChooser);
     }
 
+    private String generateCommand() {
+        String commandToExecute = /*PATH_TO_SPOTDL + */"spotdl ";
+
+        if (!withMetaDataCheckBox.isSelected()) {
+            commandToExecute += "--no-metadata ";
+        }
+
+        if (trimMusicCheckBox.isSelected()) {
+            commandToExecute += "--trim-silence ";
+        }
+
+        if (songFolderField.getText() != null && !"".equals(songFolderField.getText())) {
+            commandToExecute += "--folder ";
+            commandToExecute += "\"" + songFolderField.getText() + "\"";
+            commandToExecute += " ";
+        }
+
+        commandToExecute += "--output-ext ";
+        commandToExecute += extensionChooser.getSelectedItem();
+        commandToExecute += " ";
+
+        if (modeSelector.getSelectedIndex() == SONG_PANEL_INDEX) {
+            String artist = artistField.getText();
+            String title = songField.getText();
+            String toSearch = "\"" + artist + " - " + title + "\"";
+
+            commandToExecute += "--song ";
+            commandToExecute += toSearch;
+            commandToExecute += " ";
+        } else if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
+            String url = albumURLField.getText();
+
+            commandToExecute += "--album ";
+            commandToExecute += url;
+            commandToExecute += " ";
+        } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
+            String url = playlistURLField.getText();
+
+            commandToExecute += "--playlist ";
+            commandToExecute += url;
+            commandToExecute += " ";
+        }
+
+        System.out.println(commandToExecute);
+        return commandToExecute;
+    }
+
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == downloadButton) {
-            String commandToExecute = /*PATH_TO_SPOTDL + */"spotdl ";
-
-            if (!withMetaDataCheckBox.isSelected()) {
-                commandToExecute += "--no-metadata ";
-            }
-
-            if (trimMusicCheckBox.isSelected()) {
-                commandToExecute += "--trim-silence ";
-            }
-
-            if (songFolderField.getText() != null && !"".equals(songFolderField.getText())) {
-                commandToExecute += "--folder ";
-                commandToExecute += songFolderField.getText();
-                commandToExecute += " ";
-            }
-
-            if (modeSelector.getSelectedIndex() == SONG_PANEL_INDEX) {
-                String artist = artistField.getText();
-                String title = songField.getText();
-                String toSearch = "\"" + artist + " - " + title + "\"";
-
-                commandToExecute += "--song ";
-                commandToExecute += toSearch;
-                commandToExecute += " ";
-            } else if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
-                String url = albumURLField.getText();
-
-                commandToExecute += "--album ";
-                commandToExecute += url;
-                commandToExecute += " ";
-            } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
-                String url = playlistURLField.getText();
-
-                commandToExecute += "--playlist ";
-                commandToExecute += url;
-                commandToExecute += " ";
-            }
-
-            System.out.println(commandToExecute);
-
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", commandToExecute);
+            processBuilder.command("bash", "-c", generateCommand());
 
             try {
                 Process process = processBuilder.start();
