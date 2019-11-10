@@ -2,11 +2,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Vue extends JPanel implements ActionListener {
     final int SONG_PANEL_INDEX = 0;
     final int ALBUM_PANEL_INDEX = 1;
     final int PLAYLIST_PANEL_INDEX = 2;
+
+    final int MP3_INDEX = 0;
+    final int M4A_INDEX = 1;
+    final int FLAC_INDEX = 2;
+
+    final String PATH_TO_SPOTDL = "../../../resources/spotdl/bin/";
 
     JTabbedPane modeSelector;
 
@@ -178,6 +187,77 @@ public class Vue extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == downloadButton) {
+            String commandToExecute = /*PATH_TO_SPOTDL + */"spotdl ";
 
+            if (!withMetaDataCheckBox.isSelected()) {
+                commandToExecute += "--no-metadata ";
+            }
+
+            if (trimMusicCheckBox.isSelected()) {
+                commandToExecute += "--trim-silence ";
+            }
+
+            if (songFolderField.getText() != null && !"".equals(songFolderField.getText())) {
+                commandToExecute += "--folder ";
+                commandToExecute += songFolderField.getText();
+                commandToExecute += " ";
+            }
+
+            if (modeSelector.getSelectedIndex() == SONG_PANEL_INDEX) {
+                String artist = artistField.getText();
+                String title = songField.getText();
+                String toSearch = "\"" + artist + " - " + title + "\"";
+
+                commandToExecute += "--song ";
+                commandToExecute += toSearch;
+                commandToExecute += " ";
+            } else if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
+                String url = albumURLField.getText();
+
+                commandToExecute += "--album ";
+                commandToExecute += url;
+                commandToExecute += " ";
+            } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
+                String url = playlistURLField.getText();
+
+                commandToExecute += "--playlist ";
+                commandToExecute += url;
+                commandToExecute += " ";
+            }
+
+            System.out.println(commandToExecute);
+
+            ProcessBuilder processBuilder = new ProcessBuilder();
+            processBuilder.command("bash", "-c", commandToExecute);
+
+            try {
+                Process process = processBuilder.start();
+
+                StringBuilder output = new StringBuilder();
+
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line + "\n");
+                }
+
+                int exitVal = process.waitFor();
+                if (exitVal == 0) {
+                    System.out.println("Success!");
+                    System.out.println(output);
+                } else {
+                    System.out.println("Failure!");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //folderChooserButton;
     }
 }
