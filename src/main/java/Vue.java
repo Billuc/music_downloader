@@ -247,7 +247,7 @@ public class Vue extends JPanel implements ActionListener {
                 int exitVal = process.waitFor();
                 if (exitVal == 0) {
                     System.out.println("Success!");
-                    System.out.println(output);
+                    //System.out.println(output);
                 } else {
                     System.out.println("Failure!");
                 }
@@ -258,6 +258,17 @@ public class Vue extends JPanel implements ActionListener {
                 e.printStackTrace();
             }
         }
-        //folderChooserButton;
+        else if (actionEvent.getSource() == folderChooserButton) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Dossier de sauvegarde des musiques");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            // disable the "All files" option
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String folderName = chooser.getSelectedFile().getAbsolutePath();
+                songFolderField.setText(folderName);
+            }
+        }
     }
 }
