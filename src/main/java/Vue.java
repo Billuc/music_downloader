@@ -127,8 +127,8 @@ public class Vue extends JPanel implements ActionListener {
         artistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
         artistURLField = new JTextArea();
 
-        dlFromArtistPanel.add(albumURLLabel);
-        dlFromArtistPanel.add(albumURLField);
+        dlFromArtistPanel.add(artistURLLabel);
+        dlFromArtistPanel.add(artistURLField);
     }
 
     private void initPlaylistPanel() {
@@ -258,22 +258,20 @@ public class Vue extends JPanel implements ActionListener {
             try {
                 Process process = processBuilder.start();
 
-                StringBuilder output = new StringBuilder();
-
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(process.getInputStream()));
 
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    output.append(line + "\n");
-                }
+                BufferedReader errorReader = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream()));
+
+                new ReaderThread(reader).start();
+                new ReaderThread(errorReader).start();
 
                 int exitVal = process.waitFor();
                 if (exitVal == 0) {
-                    System.out.println("Success!");
-                    //System.out.println(output);
+                    JOptionPane.showMessageDialog(this, "Song successfully downloaded !", "Success!", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    System.out.println("Failure!");
+                    JOptionPane.showMessageDialog(this, "The execution of the command was a failure !", "Failure!", JOptionPane.ERROR_MESSAGE);
                 }
 
             } catch (IOException e) {
