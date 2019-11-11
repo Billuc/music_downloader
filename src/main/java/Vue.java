@@ -278,7 +278,7 @@ public class Vue extends JPanel implements ActionListener {
 
         try {
             Process process = processBuilder.start();
-            //DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", true);
+            DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", false);
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
@@ -286,13 +286,11 @@ public class Vue extends JPanel implements ActionListener {
             BufferedReader errorReader = new BufferedReader(
                     new InputStreamReader(process.getErrorStream()));
 
-            new ReaderThread(reader, null).start();
-            new ReaderThread(errorReader, null).start();
+            new ReaderThread(reader, dsd).start();
+            new ReaderThread(errorReader, dsd).start();
 
             int exitVal = process.waitFor();
-            if (exitVal == 0) {
-                JOptionPane.showMessageDialog(this, "Song(s) successfully downloaded !", "Success!", JOptionPane.INFORMATION_MESSAGE);
-            } else {
+            if (exitVal != 0) {
                 JOptionPane.showMessageDialog(this, "The execution of the command was a failure !", "Failure!", JOptionPane.ERROR_MESSAGE);
             }
 

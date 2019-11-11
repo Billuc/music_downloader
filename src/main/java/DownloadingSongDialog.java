@@ -5,6 +5,9 @@ import java.awt.*;
 public class DownloadingSongDialog extends JDialog {
     JScrollPane jsp;
     JTextPane text;
+    StyledDocument document;
+    SimpleAttributeSet normalText;
+    SimpleAttributeSet errorText;
 
     public DownloadingSongDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
@@ -23,24 +26,32 @@ public class DownloadingSongDialog extends JDialog {
 
     private void initTextArea() {
         text = new JTextPane();
-        text.setBackground(Color.pink);
+        text.setText("");
+
+        document = text.getStyledDocument();
+
+        normalText = new SimpleAttributeSet();
+        StyleConstants.setForeground(normalText, Color.BLACK);
+        StyleConstants.setFontFamily(normalText, "Lucida Console");
+        StyleConstants.setAlignment(normalText, StyleConstants.ALIGN_JUSTIFIED);
+
+        errorText = new SimpleAttributeSet();
+        StyleConstants.setForeground(errorText, Color.RED);
+        StyleConstants.setBold(errorText, true);
+        StyleConstants.setFontFamily(errorText, "Lucida Console");
+        StyleConstants.setAlignment(errorText, StyleConstants.ALIGN_JUSTIFIED);
     }
 
-    private void appendToPane(JTextPane tp, String msg, Color c) {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-
-        int len = tp.getDocument().getLength();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
+    private void appendToPane(JTextPane tp, String msg, SimpleAttributeSet style) {
+        try {
+            document.insertString(document.getLength(), msg, style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void write(String s) {
-        appendToPane(text, s, Color.BLACK);
+        appendToPane(text, s, normalText);
     }
 
     public void writeLn(String s) {
@@ -48,7 +59,7 @@ public class DownloadingSongDialog extends JDialog {
     }
 
     public void error(String s) {
-        appendToPane(text, s, Color.RED);
+        appendToPane(text, s, errorText);
     }
 
     public void errorLn(String s) {

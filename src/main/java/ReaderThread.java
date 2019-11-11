@@ -17,14 +17,13 @@ public class ReaderThread extends Thread {
         try {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-                //dialog.writeLn(line);
-                //dialog.repaint();
+                //System.out.println(line);
+                dialog.writeLn(line);
             }
         } catch (IOException ie) {
             for (StackTraceElement ste : ie.getStackTrace()) {
-                //dialog.errorLn(ste.toString());
-                System.err.println(ste.toString());
+                dialog.errorLn(ste.toString());
+                //System.err.println(ste.toString());
             }
 
             //dialog.repaint();
