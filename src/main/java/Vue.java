@@ -66,7 +66,7 @@ public class Vue extends JPanel implements ActionListener {
         this.parent = parent;
 
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.CYAN);
+        this.setBackground(new Color(255,255,255));
 
         initModeSelector();
         initOtherOptionsPane();
@@ -82,7 +82,7 @@ public class Vue extends JPanel implements ActionListener {
         initPlaylistPanel();
 
         modeSelector = new JTabbedPane();
-        modeSelector.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        modeSelector.setBorder(BorderFactory.createEmptyBorder(10,10,5,10));
 
         modeSelector.addTab("DL From Song", dlFromSongPanel);
         modeSelector.addTab("DL From Album", dlFromAlbumPanel);
@@ -92,7 +92,7 @@ public class Vue extends JPanel implements ActionListener {
 
     private void initSongPanel() {
         dlFromSongPanel = new JPanel();
-        dlFromSongPanel.setBackground(Color.RED);
+        dlFromSongPanel.setBackground(new Color(225,225, 90));
         dlFromSongPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         dlFromSongPanel.setLayout(new GridLayout(2,2, 5,5));
 
@@ -112,11 +112,11 @@ public class Vue extends JPanel implements ActionListener {
 
     private void initAlbumPanel() {
         dlFromAlbumPanel = new JPanel();
-        dlFromAlbumPanel.setBackground(Color.green);
+        dlFromAlbumPanel.setBackground(new Color(255,180,180));
         dlFromAlbumPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         dlFromAlbumPanel.setLayout(new GridLayout(1,2, 5,5));
 
-        albumURLLabel = new JLabel("URL Spotify de l'album : ");
+        albumURLLabel = new JLabel("Album's Spotify URL : ");
         albumURLLabel.setHorizontalTextPosition(JLabel.CENTER);
         albumURLField = new JTextArea();
 
@@ -126,11 +126,11 @@ public class Vue extends JPanel implements ActionListener {
 
     private void initArtistPanel() {
         dlFromArtistPanel = new JPanel();
-        dlFromArtistPanel.setBackground(Color.magenta);
+        dlFromArtistPanel.setBackground(new Color(200,200,255));
         dlFromArtistPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         dlFromArtistPanel.setLayout(new GridLayout(1,2, 5,5));
 
-        artistURLLabel = new JLabel("URL Spotify de l'artiste (tous les albums seront téléchargés) : ");
+        artistURLLabel = new JLabel("Artist's Spotify URL (all albums will be downloaded) :");
         artistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
         artistURLField = new JTextArea();
 
@@ -140,11 +140,11 @@ public class Vue extends JPanel implements ActionListener {
 
     private void initPlaylistPanel() {
         dlFromPlaylistPanel = new JPanel();
-        dlFromPlaylistPanel.setBackground(Color.blue);
+        dlFromPlaylistPanel.setBackground(new Color(180,240,180));
         dlFromPlaylistPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         dlFromPlaylistPanel.setLayout(new GridLayout(1,2, 5,5));
 
-        playlistURLLabel = new JLabel("URL Spotify de la playlist : ");
+        playlistURLLabel = new JLabel("Playlist's Spotify URL : ");
         playlistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
         playlistURLField = new JTextArea();
 
@@ -155,7 +155,7 @@ public class Vue extends JPanel implements ActionListener {
     private void initOtherOptionsPane() {
         moreOptionsPanel = new JPanel();
         moreOptionsPanel.setLayout(new GridLayout(3,2));
-        moreOptionsPanel.setBackground(Color.yellow);
+        moreOptionsPanel.setBackground(new Color(180,180,180));
         moreOptionsPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         initOptions();
