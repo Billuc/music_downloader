@@ -9,7 +9,7 @@ public class Fenetre extends JFrame {
         this.setLocationByPlatform(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        laVue = new Vue();
+        laVue = new Vue(this);
         this.add(laVue);
 
         this.setVisible(true);

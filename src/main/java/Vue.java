@@ -55,8 +55,12 @@ public class Vue extends JPanel implements ActionListener {
 
     JButton downloadButton;
 
-    public Vue() {
+    JFrame parent;
+
+    public Vue(JFrame parent) {
         super();
+
+        this.parent = parent;
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.CYAN);
@@ -257,6 +261,7 @@ public class Vue extends JPanel implements ActionListener {
 
             try {
                 Process process = processBuilder.start();
+                //DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", true);
 
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(process.getInputStream()));
@@ -264,8 +269,8 @@ public class Vue extends JPanel implements ActionListener {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));
 
-                new ReaderThread(reader).start();
-                new ReaderThread(errorReader).start();
+                new ReaderThread(reader, null).start();
+                new ReaderThread(errorReader, null).start();
 
                 int exitVal = process.waitFor();
                 if (exitVal == 0) {

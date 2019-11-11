@@ -3,9 +3,11 @@ import java.io.IOException;
 
 public class ReaderThread extends Thread {
     BufferedReader reader;
+    DownloadingSongDialog dialog;
 
-    public ReaderThread(BufferedReader pReader) {
+    public ReaderThread(BufferedReader pReader, DownloadingSongDialog pDialog) {
         reader = pReader;
+        dialog = pDialog;
     }
 
     @Override
@@ -16,9 +18,16 @@ public class ReaderThread extends Thread {
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
+                //dialog.writeLn(line);
+                //dialog.repaint();
             }
         } catch (IOException ie) {
-            ie.printStackTrace();
+            for (StackTraceElement ste : ie.getStackTrace()) {
+                //dialog.errorLn(ste.toString());
+                System.err.println(ste.toString());
+            }
+
+            //dialog.repaint();
         }
     }
 }
