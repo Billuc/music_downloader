@@ -17,6 +17,7 @@ public class Vue extends JPanel implements ActionListener {
     final int FLAC_INDEX = 2;
 
     final String PATH_TO_SPOTDL = "../../../resources/spotdl/bin/";
+    final String SPOTDL = "spotdl ";
 
     JTabbedPane modeSelector;
 
@@ -56,6 +57,8 @@ public class Vue extends JPanel implements ActionListener {
     JButton downloadButton;
 
     JFrame parent;
+
+    String options;
 
     public Vue(JFrame parent) {
         super();
@@ -208,81 +211,105 @@ public class Vue extends JPanel implements ActionListener {
     }
 
     private String generateCommand() {
-        String commandToExecute = /*PATH_TO_SPOTDL + */"spotdl ";
+        String dlOption = "";
+        options = "--overwrite skip ";
+
 
         if (!withMetaDataCheckBox.isSelected()) {
-            commandToExecute += "--no-metadata ";
+            options += "--no-metadata ";
         }
 
         if (trimMusicCheckBox.isSelected()) {
-            commandToExecute += "--trim-silence ";
+            options += "--trim-silence ";
         }
 
         if (songFolderField.getText() != null && !"".equals(songFolderField.getText())) {
-            commandToExecute += "--folder ";
-            commandToExecute += "\"" + songFolderField.getText() + "\"";
-            commandToExecute += " ";
+            options += "--folder ";
+            options += "\"" + songFolderField.getText() + "\"";
+            options += " ";
         }
 
-        commandToExecute += "--output-ext ";
-        commandToExecute += extensionChooser.getSelectedItem();
-        commandToExecute += " ";
+        options += "--output-ext ";
+        options += extensionChooser.getSelectedItem();
+        options += " ";
 
         if (modeSelector.getSelectedIndex() == SONG_PANEL_INDEX) {
             String artist = artistField.getText();
             String title = songField.getText();
             String toSearch = "\"" + artist + " - " + title + "\"";
 
-            commandToExecute += "--song ";
-            commandToExecute += toSearch;
-            commandToExecute += " ";
-        } else if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
-            String url = albumURLField.getText();
+            dlOption += "--song ";
+            dlOption += toSearch;
+            dlOption += " ";
+        } else {
+            dlOption += "--write-to \"tracks.txt\" ";
 
-            commandToExecute += "--album ";
-            commandToExecute += url;
-            commandToExecute += " ";
-        } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
-            String url = playlistURLField.getText();
+            if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
+                String url = albumURLField.getText();
 
-            commandToExecute += "--playlist ";
-            commandToExecute += url;
-            commandToExecute += " ";
+                dlOption += "--album ";
+                dlOption += url;
+                dlOption += " ";
+            } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
+                String url = playlistURLField.getText();
+
+                dlOption += "--playlist ";
+                dlOption += url;
+                dlOption += " ";
+            } else if (modeSelector.getSelectedIndex() == ARTIST_PANEL_INDEX) {
+                String url = artistURLField.getText();
+
+                dlOption += "--all-albums ";
+                dlOption += url;
+                dlOption += " ";
+            }
+
+            return SPOTDL + dlOption;
         }
 
-        System.out.println(commandToExecute);
-        return commandToExecute;
+        return SPOTDL + options + dlOption;
+    }
+
+    private void executeCommand(String command) {
+        System.out.println(command);
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash", "-c", command);
+
+        try {
+            Process process = processBuilder.start();
+            //DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", true);
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            BufferedReader errorReader = new BufferedReader(
+                    new InputStreamReader(process.getErrorStream()));
+
+            new ReaderThread(reader, null).start();
+            new ReaderThread(errorReader, null).start();
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                JOptionPane.showMessageDialog(this, "Song(s) successfully downloaded !", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "The execution of the command was a failure !", "Failure!", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == downloadButton) {
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", generateCommand());
+            executeCommand(generateCommand());
 
-            try {
-                Process process = processBuilder.start();
-                //DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", true);
-
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(process.getInputStream()));
-
-                BufferedReader errorReader = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream()));
-
-                new ReaderThread(reader, null).start();
-                new ReaderThread(errorReader, null).start();
-
-                int exitVal = process.waitFor();
-                if (exitVal == 0) {
-                    JOptionPane.showMessageDialog(this, "Song successfully downloaded !", "Success!", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "The execution of the command was a failure !", "Failure!", JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (modeSelector.getSelectedIndex() != SONG_PANEL_INDEX) {
+                executeCommand(SPOTDL + options + "--list \"tracks.txt\"");
+                executeCommand("rm tracks.txt");
             }
         }
         else if (actionEvent.getSource() == folderChooserButton) {
