@@ -7,7 +7,7 @@ public class SongURLView extends JPanel {
 
     public SongURLView() {
         super();
-        this.setBackground(new Color(255,180,180));
+        this.setBackground(new Color(221, 161, 255));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         this.setLayout(new GridLayout(1,2, 5,5));
 
