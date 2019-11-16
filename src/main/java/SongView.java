@@ -1,13 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class SongView extends JPanel {
-    JLabel artistLabel;
-    JTextArea artistField;
-    JLabel songLabel;
-    JTextArea songField;
+class SongView extends JPanel {
+    private JLabel artistLabel;
+    private JTextArea artistField;
+    private JLabel songLabel;
+    private JTextArea songField;
 
-    public SongView() {
+    SongView() {
         super();
         this.setBackground(new Color(225,225, 90));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -27,11 +27,11 @@ public class SongView extends JPanel {
         this.add(songField);
     }
 
-    public String getArtist() {
+    String getArtist() {
         return artistField.getText();
     }
 
-    public String getSongTitle() {
+    String getSongTitle() {
         return songField.getText();
     }
 }

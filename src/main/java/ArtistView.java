@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ArtistView extends JPanel {
-    JLabel artistURLLabel;
-    JTextArea artistURLField;
+class ArtistView extends JPanel {
+    private JLabel artistURLLabel;
+    private JTextArea artistURLField;
 
-    public ArtistView() {
+    ArtistView() {
         super();
         this.setBackground(new Color(200,200,255));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -19,7 +19,7 @@ public class ArtistView extends JPanel {
         this.add(artistURLField);
     }
 
-    public String getArtistUrl() {
+    String getArtistUrl() {
         return artistURLField.getText();
     }
 }

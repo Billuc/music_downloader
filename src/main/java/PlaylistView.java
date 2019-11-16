@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class PlaylistView extends JPanel{
-    JLabel playlistURLLabel;
-    JTextArea playlistURLField;
+class PlaylistView extends JPanel{
+    private JLabel playlistURLLabel;
+    private JTextArea playlistURLField;
 
-    public PlaylistView() {
+    PlaylistView() {
         super();
         this.setBackground(new Color(180,240,180));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -19,7 +19,7 @@ public class PlaylistView extends JPanel{
         this.add(playlistURLField);
     }
 
-    public String getPlaylistUrl() {
+    String getPlaylistUrl() {
         return playlistURLField.getText();
     }
 }

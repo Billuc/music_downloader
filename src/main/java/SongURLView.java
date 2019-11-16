@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class SongURLView extends JPanel {
-    JLabel songURLLabel;
-    JTextArea songURLField;
+class SongURLView extends JPanel {
+    private JLabel songURLLabel;
+    private JTextArea songURLField;
 
-    public SongURLView() {
+    SongURLView() {
         super();
         this.setBackground(new Color(221, 161, 255));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -19,7 +19,7 @@ public class SongURLView extends JPanel {
         this.add(songURLField);
     }
 
-    public String getSongUrl() {
+    String getSongUrl() {
         return songURLField.getText();
     }
 }

@@ -4,22 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class OptionsPanel extends JPanel implements ActionListener {
-    JCheckBox withMetaDataCheckBox;
+    private JCheckBox withMetaDataCheckBox;
 
-    JLabel songFolderLabel;
-    JTextArea songFolderField;
-    JButton folderChooserButton;
+    private JLabel songFolderLabel;
+    private JTextArea songFolderField;
+    private JButton folderChooserButton;
 
-    JLabel extensionLabel;
-    JComboBox extensionChooser;
+    private JLabel extensionLabel;
+    private JComboBox extensionChooser;
 
-    JCheckBox trimMusicCheckBox;
+    private JCheckBox trimMusicCheckBox;
 
-    JButton downloadButton;
+    private JButton downloadButton;
 
-    Vue parent;
+    private Vue parent;
 
-    public OptionsPanel(Vue parent) {
+    OptionsPanel(Vue parent) {
         super();
         this.setBackground(new Color(180,180,180));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));

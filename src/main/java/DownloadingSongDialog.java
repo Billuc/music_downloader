@@ -3,13 +3,13 @@ import javax.swing.text.*;
 import java.awt.*;
 
 public class DownloadingSongDialog extends JDialog {
-    JScrollPane jsp;
-    JTextPane text;
-    StyledDocument document;
-    SimpleAttributeSet normalText;
-    SimpleAttributeSet errorText;
+    //JScrollPane jsp;
+    private JTextPane text;
+    private StyledDocument document;
+    private SimpleAttributeSet normalText;
+    private SimpleAttributeSet errorText;
 
-    public DownloadingSongDialog(JFrame parent, String title, boolean modal) {
+    DownloadingSongDialog(JFrame parent, String title, boolean modal) {
         super(parent, title, modal);
         this.setSize(500,300);
         this.setLocationRelativeTo(null);
@@ -50,19 +50,19 @@ public class DownloadingSongDialog extends JDialog {
         }
     }
 
-    public void write(String s) {
+    void write(String s) {
         appendToPane(text, s, normalText);
     }
 
-    public void writeLn(String s) {
+    void writeLn(String s) {
         write(s + "\n");
     }
 
-    public void error(String s) {
+    void error(String s) {
         appendToPane(text, s, errorText);
     }
 
-    public void errorLn(String s) {
+    void errorLn(String s) {
         error(s + "\n");
     }
 }

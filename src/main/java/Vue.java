@@ -5,29 +5,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Vue extends JPanel {
-    final int SONG_PANEL_INDEX = 0;
-    final int SONG_URL_PANEL_INDEX = 1;
-    final int ALBUM_PANEL_INDEX = 2;
-    final int ARTIST_PANEL_INDEX = 3;
-    final int PLAYLIST_PANEL_INDEX = 4;
+    private final int SONG_PANEL_INDEX = 0;
+    private final int SONG_URL_PANEL_INDEX = 1;
+    private final int ALBUM_PANEL_INDEX = 2;
+    private final int ARTIST_PANEL_INDEX = 3;
+    private final int PLAYLIST_PANEL_INDEX = 4;
 
-    final String SPOTDL = "spotdl ";
+    private final String SPOTDL = "spotdl ";
 
-    JTabbedPane modeSelector;
+    private JTabbedPane modeSelector;
 
-    SongView dlFromSongPanel;
-    SongURLView dlFromSongUrlPanel;
-    PlaylistView dlFromPlaylistPanel;
-    AlbumView dlFromAlbumPanel;
-    ArtistView dlFromArtistPanel;
+    private SongView dlFromSongPanel;
+    private SongURLView dlFromSongUrlPanel;
+    private PlaylistView dlFromPlaylistPanel;
+    private AlbumView dlFromAlbumPanel;
+    private ArtistView dlFromArtistPanel;
 
-    OptionsPanel moreOptionsPanel;
+    private OptionsPanel moreOptionsPanel;
+    private String options;
 
-    JFrame parent;
+    private JFrame parent;
 
-    String options;
-
-    public Vue(JFrame parent) {
+    Vue(JFrame parent) {
         super();
         this.setBackground(new Color(255,255,255));
 
@@ -37,11 +36,11 @@ public class Vue extends JPanel {
         this.setLayout(layout);
         GridBagConstraints c = new GridBagConstraints();
 
-        initModeSelector(layout, c);
-        initOtherOptionsPane(layout, c);
+        initModeSelector(c);
+        initOtherOptionsPane(c);
     }
 
-    private void initModeSelector(GridBagLayout layout, GridBagConstraints c) {
+    private void initModeSelector(GridBagConstraints c) {
         dlFromSongPanel = new SongView();
         dlFromSongUrlPanel = new SongURLView();
         dlFromPlaylistPanel = new PlaylistView();
@@ -64,7 +63,7 @@ public class Vue extends JPanel {
         this.add(modeSelector, c);
     }
 
-    private void initOtherOptionsPane(GridBagLayout layout, GridBagConstraints c) {
+    private void initOtherOptionsPane(GridBagConstraints c) {
         moreOptionsPanel = new OptionsPanel(this);
 
         c.insets = new Insets(5,10,10,10);

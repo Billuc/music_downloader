@@ -2,10 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ReaderThread extends Thread {
-    BufferedReader reader;
-    DownloadingSongDialog dialog;
+    private BufferedReader reader;
+    private DownloadingSongDialog dialog;
 
-    public ReaderThread(BufferedReader pReader, DownloadingSongDialog pDialog) {
+    ReaderThread(BufferedReader pReader, DownloadingSongDialog pDialog) {
         reader = pReader;
         dialog = pDialog;
     }

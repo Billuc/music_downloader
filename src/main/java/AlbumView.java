@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class AlbumView extends JPanel {
-    JLabel albumURLLabel;
-    JTextArea albumURLField;
+class AlbumView extends JPanel {
+    private JLabel albumURLLabel;
+    private JTextArea albumURLField;
 
-    public AlbumView() {
+    AlbumView() {
         super();
         this.setBackground(new Color(255,180,180));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -19,7 +19,7 @@ public class AlbumView extends JPanel {
         this.add(albumURLField);
     }
 
-    public String getAlbumUrl() {
+    String getAlbumUrl() {
         return albumURLField.getText();
     }
 }
