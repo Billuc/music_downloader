@@ -6,12 +6,10 @@ import java.awt.event.ActionListener;
 public class OptionsPanel extends JPanel implements ActionListener {
     JCheckBox withMetaDataCheckBox;
 
-    JPanel songFolderPanel;
     JLabel songFolderLabel;
     JTextArea songFolderField;
     JButton folderChooserButton;
 
-    JPanel extensionPanel;
     JLabel extensionLabel;
     JComboBox extensionChooser;
 
@@ -23,62 +21,157 @@ public class OptionsPanel extends JPanel implements ActionListener {
 
     public OptionsPanel(Vue parent) {
         super();
-        this.setLayout(new GridLayout(3,2));
         this.setBackground(new Color(180,180,180));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.parent = parent;
 
-        initOptions();
+        GridBagLayout layout = new GridBagLayout();
+        this.setLayout(layout);
+        GridBagConstraints c = new GridBagConstraints();
 
-        this.add(withMetaDataCheckBox);
-        this.add(songFolderPanel);
-        this.add(extensionPanel);
-        this.add(trimMusicCheckBox);
-        this.add(downloadButton);
+        initSongFolderOption(layout, c);
+        initExtensionOption(layout, c);
+        initTrimMusicCheckbox(layout, c);
+        initMetaDataCheckbox(layout, c);
+        initDownloadButton(layout, c);
     }
 
-    private void initOptions() {
-        withMetaDataCheckBox = new JCheckBox("Download Metadata", true);
-        withMetaDataCheckBox.setHorizontalTextPosition(JCheckBox.LEFT);
-
-        initSongFolderPanel();
-        initExtensionPanel();
-
-        trimMusicCheckBox = new JCheckBox("Trim the music", false);
-        trimMusicCheckBox.setHorizontalTextPosition(JCheckBox.LEFT);
-
-        downloadButton = new JButton("Download");
-        downloadButton.addActionListener(this);
-    }
-
-    private void initSongFolderPanel() {
-        songFolderPanel = new JPanel();
-        songFolderPanel.setLayout(new BoxLayout(songFolderPanel, BoxLayout.X_AXIS));
-
+    private void initSongFolderOption(GridBagLayout layout, GridBagConstraints c) {
         songFolderLabel = new JLabel("Song Folder : ");
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(songFolderLabel, c);
+        this.add(songFolderLabel);
+
         songFolderField = new JTextArea();
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,0);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(songFolderField, c);
+        this.add(songFolderField);
+
         folderChooserButton = new JButton("Choose a folder");
         folderChooserButton.addActionListener(this);
 
-        songFolderPanel.add(songFolderLabel);
-        songFolderPanel.add(songFolderField);
-        songFolderPanel.add(folderChooserButton);
+        c.gridx = 3;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,0,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(folderChooserButton, c);
+        this.add(folderChooserButton);
     }
 
-    private void initExtensionPanel() {
-        extensionPanel = new JPanel();
-        extensionPanel.setLayout(new BoxLayout(extensionPanel, BoxLayout.X_AXIS));
+    private void initExtensionOption(GridBagLayout layout, GridBagConstraints c) {
+        extensionLabel = new JLabel("Music Extension : ");
 
-        extensionLabel = new JLabel("Music Extension");
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(extensionLabel, c);
+        this.add(extensionLabel);
 
         String[] extensions = new String[] {".mp3", ".m4a", ".flac"};
         extensionChooser = new JComboBox(extensions);
         extensionChooser.setSelectedIndex(0);
         extensionChooser.addActionListener(this);
 
-        extensionPanel.add(extensionLabel);
-        extensionPanel.add(extensionChooser);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(extensionChooser, c);
+        this.add(extensionChooser);
+    }
+
+    private void initTrimMusicCheckbox(GridBagLayout layout, GridBagConstraints c) {
+        trimMusicCheckBox = new JCheckBox("Trim the music ", false);
+        trimMusicCheckBox.setHorizontalTextPosition(JCheckBox.LEFT);
+
+        c.gridx = 2;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(trimMusicCheckBox, c);
+        this.add(trimMusicCheckBox);
+    }
+
+    private void initMetaDataCheckbox(GridBagLayout layout, GridBagConstraints c) {
+        withMetaDataCheckBox = new JCheckBox("Download Metadata ", true);
+        withMetaDataCheckBox.setHorizontalTextPosition(JCheckBox.LEFT);
+
+        c.gridx = 3;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.ipadx = 5;
+        c.ipady = 2;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(withMetaDataCheckBox, c);
+        this.add(withMetaDataCheckBox);
+    }
+
+    private void initDownloadButton(GridBagLayout layout, GridBagConstraints c) {
+        downloadButton = new JButton("Download");
+        downloadButton.addActionListener(this);
+
+        c.gridx = 4;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 2;
+        c.ipadx = 5;
+        c.ipady = 5;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.insets = new Insets(5,5,5,5);
+        c.fill = GridBagConstraints.BOTH;
+        layout.addLayoutComponent(downloadButton, c);
+        this.add(downloadButton);
     }
 
     public void actionPerformed(ActionEvent actionEvent) {

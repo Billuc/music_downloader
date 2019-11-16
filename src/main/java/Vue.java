@@ -29,20 +29,19 @@ public class Vue extends JPanel {
 
     public Vue(JFrame parent) {
         super();
+        this.setBackground(new Color(255,255,255));
 
         this.parent = parent;
 
-        this.setLayout(new BorderLayout());
-        this.setBackground(new Color(255,255,255));
+        GridBagLayout layout = new GridBagLayout();
+        this.setLayout(layout);
+        GridBagConstraints c = new GridBagConstraints();
 
-        initModeSelector();
-        initOtherOptionsPane();
-
-        this.add(modeSelector, BorderLayout.CENTER);
-        this.add(moreOptionsPanel, BorderLayout.SOUTH);
+        initModeSelector(layout, c);
+        initOtherOptionsPane(layout, c);
     }
 
-    private void initModeSelector() {
+    private void initModeSelector(GridBagLayout layout, GridBagConstraints c) {
         dlFromSongPanel = new SongView();
         dlFromSongUrlPanel = new SongURLView();
         dlFromPlaylistPanel = new PlaylistView();
@@ -50,17 +49,31 @@ public class Vue extends JPanel {
         dlFromArtistPanel = new ArtistView();
 
         modeSelector = new JTabbedPane();
-        modeSelector.setBorder(BorderFactory.createEmptyBorder(10,10,5,10));
-
         modeSelector.addTab("DL From Song", dlFromSongPanel);
         modeSelector.addTab("DL From Song URL", dlFromSongUrlPanel);
         modeSelector.addTab("DL From Album", dlFromAlbumPanel);
         modeSelector.addTab("DL From Artist (all albums)", dlFromArtistPanel);
         modeSelector.addTab("DL From Playlist", dlFromPlaylistPanel);
+
+        c.insets = new Insets(10,10,5,10);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(modeSelector, c);
     }
 
-    private void initOtherOptionsPane() {
+    private void initOtherOptionsPane(GridBagLayout layout, GridBagConstraints c) {
         moreOptionsPanel = new OptionsPanel(this);
+
+        c.insets = new Insets(5,10,10,10);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1f;
+        c.weighty = 0f;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(moreOptionsPanel, c);
     }
 
     private String generateCommand() {
