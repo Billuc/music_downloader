@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 
 public class Vue extends JPanel implements ActionListener {
     final int SONG_PANEL_INDEX = 0;
-    final int ALBUM_PANEL_INDEX = 1;
-    final int ARTIST_PANEL_INDEX = 2;
-    final int PLAYLIST_PANEL_INDEX = 3;
+    final int SONG_URL_PANEL_INDEX = 1;
+    final int ALBUM_PANEL_INDEX = 2;
+    final int ARTIST_PANEL_INDEX = 3;
+    final int PLAYLIST_PANEL_INDEX = 4;
 
     final int MP3_INDEX = 0;
     final int M4A_INDEX = 1;
@@ -21,23 +22,11 @@ public class Vue extends JPanel implements ActionListener {
 
     JTabbedPane modeSelector;
 
-    JPanel dlFromSongPanel;
-    JLabel artistLabel;
-    JTextArea artistField;
-    JLabel songLabel;
-    JTextArea songField;
-
-    JPanel dlFromPlaylistPanel;
-    JLabel playlistURLLabel;
-    JTextArea playlistURLField;
-
-    JPanel dlFromAlbumPanel;
-    JLabel albumURLLabel;
-    JTextArea albumURLField;
-
-    JPanel dlFromArtistPanel;
-    JLabel artistURLLabel;
-    JTextArea artistURLField;
+    SongView dlFromSongPanel;
+    SongURLView dlFromSongUrlPanel;
+    PlaylistView dlFromPlaylistPanel;
+    AlbumView dlFromAlbumPanel;
+    ArtistView dlFromArtistPanel;
 
     JPanel moreOptionsPanel;
 
@@ -76,80 +65,20 @@ public class Vue extends JPanel implements ActionListener {
     }
 
     private void initModeSelector() {
-        initSongPanel();
-        initAlbumPanel();
-        initArtistPanel();
-        initPlaylistPanel();
+        dlFromSongPanel = new SongView();
+        dlFromSongUrlPanel = new SongURLView();
+        dlFromPlaylistPanel = new PlaylistView();
+        dlFromAlbumPanel = new AlbumView();
+        dlFromArtistPanel = new ArtistView();
 
         modeSelector = new JTabbedPane();
         modeSelector.setBorder(BorderFactory.createEmptyBorder(10,10,5,10));
 
         modeSelector.addTab("DL From Song", dlFromSongPanel);
+        modeSelector.addTab("DL From Song URL", dlFromSongUrlPanel);
         modeSelector.addTab("DL From Album", dlFromAlbumPanel);
         modeSelector.addTab("DL From Artist (all albums)", dlFromArtistPanel);
         modeSelector.addTab("DL From Playlist", dlFromPlaylistPanel);
-    }
-
-    private void initSongPanel() {
-        dlFromSongPanel = new JPanel();
-        dlFromSongPanel.setBackground(new Color(225,225, 90));
-        dlFromSongPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        dlFromSongPanel.setLayout(new GridLayout(2,2, 5,5));
-
-        artistLabel = new JLabel("Artist's name : ");
-        artistLabel.setHorizontalTextPosition(JLabel.CENTER);
-        artistField = new JTextArea();
-
-        songLabel = new JLabel("Song's title : ");
-        songLabel.setHorizontalTextPosition(JLabel.CENTER);
-        songField = new JTextArea();
-
-        dlFromSongPanel.add(artistLabel);
-        dlFromSongPanel.add(artistField);
-        dlFromSongPanel.add(songLabel);
-        dlFromSongPanel.add(songField);
-    }
-
-    private void initAlbumPanel() {
-        dlFromAlbumPanel = new JPanel();
-        dlFromAlbumPanel.setBackground(new Color(255,180,180));
-        dlFromAlbumPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        dlFromAlbumPanel.setLayout(new GridLayout(1,2, 5,5));
-
-        albumURLLabel = new JLabel("Album's Spotify URL : ");
-        albumURLLabel.setHorizontalTextPosition(JLabel.CENTER);
-        albumURLField = new JTextArea();
-
-        dlFromAlbumPanel.add(albumURLLabel);
-        dlFromAlbumPanel.add(albumURLField);
-    }
-
-    private void initArtistPanel() {
-        dlFromArtistPanel = new JPanel();
-        dlFromArtistPanel.setBackground(new Color(200,200,255));
-        dlFromArtistPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        dlFromArtistPanel.setLayout(new GridLayout(1,2, 5,5));
-
-        artistURLLabel = new JLabel("Artist's Spotify URL (all albums will be downloaded) :");
-        artistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
-        artistURLField = new JTextArea();
-
-        dlFromArtistPanel.add(artistURLLabel);
-        dlFromArtistPanel.add(artistURLField);
-    }
-
-    private void initPlaylistPanel() {
-        dlFromPlaylistPanel = new JPanel();
-        dlFromPlaylistPanel.setBackground(new Color(180,240,180));
-        dlFromPlaylistPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        dlFromPlaylistPanel.setLayout(new GridLayout(1,2, 5,5));
-
-        playlistURLLabel = new JLabel("Playlist's Spotify URL : ");
-        playlistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
-        playlistURLField = new JTextArea();
-
-        dlFromPlaylistPanel.add(playlistURLLabel);
-        dlFromPlaylistPanel.add(playlistURLField);
     }
 
     private void initOtherOptionsPane() {
@@ -234,30 +163,36 @@ public class Vue extends JPanel implements ActionListener {
         options += " ";
 
         if (modeSelector.getSelectedIndex() == SONG_PANEL_INDEX) {
-            String artist = artistField.getText();
-            String title = songField.getText();
+            String artist = dlFromSongPanel.getArtist();
+            String title = dlFromSongPanel.getSongTitle();
             String toSearch = "\"" + artist + " - " + title + "\"";
 
             dlOption += "--song ";
             dlOption += toSearch;
             dlOption += " ";
+        } else if (modeSelector.getSelectedIndex() == SONG_URL_PANEL_INDEX) {
+            String url = dlFromSongUrlPanel.getSongUrl();
+
+            dlOption += "--song ";
+            dlOption += url;
+            dlOption += " ";
         } else {
             dlOption += "--write-to \"tracks.txt\" ";
 
             if (modeSelector.getSelectedIndex() == ALBUM_PANEL_INDEX) {
-                String url = albumURLField.getText();
+                String url = dlFromAlbumPanel.getAlbumUrl();
 
                 dlOption += "--album ";
                 dlOption += url;
                 dlOption += " ";
             } else if (modeSelector.getSelectedIndex() == PLAYLIST_PANEL_INDEX) {
-                String url = playlistURLField.getText();
+                String url = dlFromPlaylistPanel.getPlaylistUrl();
 
                 dlOption += "--playlist ";
                 dlOption += url;
                 dlOption += " ";
             } else if (modeSelector.getSelectedIndex() == ARTIST_PANEL_INDEX) {
-                String url = artistURLField.getText();
+                String url = dlFromArtistPanel.getArtistUrl();
 
                 dlOption += "--all-albums ";
                 dlOption += url;
