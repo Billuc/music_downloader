@@ -1,23 +1,49 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class DownloadDialog extends JDialog {
-    private JTextArea displayer;
-    private JScrollPane scroll;
+public class DownloadDialog extends JFrame {
+    private JTextArea infosDisplayer;
+    private JTextArea downloadingDisplayer;
 
-    DownloadDialog() {
+    DownloadDialog(Controler ctrler) {
         super();
-        this.setLayout(new BorderLayout());
         this.setSize(500,300);
         this.setLocationByPlatform(true);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //this.setAlwaysOnTop(true);
+        this.addWindowListener(ctrler);
 
-        displayer = new JTextArea();
-        displayer.setEditable(false);
-        displayer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        displayer.setLineWrap(true);
+        GridBagLayout layout = new GridBagLayout();
+        this.setLayout(layout);
+        GridBagConstraints c = new GridBagConstraints();
 
-        scroll = new JScrollPane(displayer);
-        this.add(scroll);
+        infosDisplayer = new JTextArea();
+        infosDisplayer.setEditable(false);
+        //infosDisplayer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        infosDisplayer.setLineWrap(true);
+        JScrollPane scroll = new JScrollPane(infosDisplayer);
+
+        c.insets = new Insets(5,5,0,5);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1f;
+        c.weighty = 0.4f;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(scroll, c);
+
+        downloadingDisplayer = new JTextArea();
+        downloadingDisplayer.setEditable(false);
+        //downloadingDisplayer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        downloadingDisplayer.setLineWrap(true);
+        JScrollPane dlScroll = new JScrollPane(downloadingDisplayer);
+
+        c.insets = new Insets(0,5,5,5);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1f;
+        c.weighty = 1f;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(dlScroll, c);
     }
 
     public void start() {
@@ -25,7 +51,13 @@ public class DownloadDialog extends JDialog {
     }
 
     void appendMsg(String message) {
-        displayer.append(message + "\n");
-        displayer.setCaretPosition(displayer.getText().length());
+        if (message.contains("INFO")) {
+            infosDisplayer.append(message + "\n");
+            infosDisplayer.setCaretPosition(infosDisplayer.getText().length());
+        }
+        else {
+            downloadingDisplayer.append(message + "\n");
+            downloadingDisplayer.setCaretPosition(downloadingDisplayer.getText().length());
+        }
     }
 }

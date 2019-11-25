@@ -16,6 +16,7 @@ class SongURLView extends JPanel {
 
         songURLField = new JTextArea();
         songURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        songURLField.setLineWrap(true);
 
         this.add(songURLLabel);
         this.add(songURLField);

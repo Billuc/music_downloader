@@ -18,12 +18,14 @@ class SongView extends JPanel {
 
         artistField = new JTextArea();
         artistField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        artistField.setLineWrap(true);
 
         songLabel = new JLabel("Song's title : ");
         songLabel.setHorizontalTextPosition(JLabel.CENTER);
 
         songField = new JTextArea();
         songField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        songField.setLineWrap(true);
 
         this.add(artistLabel);
         this.add(artistField);

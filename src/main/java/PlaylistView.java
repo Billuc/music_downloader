@@ -16,6 +16,7 @@ class PlaylistView extends JPanel{
 
         playlistURLField = new JTextArea();
         playlistURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        playlistURLField.setLineWrap(true);
 
         this.add(playlistURLLabel);
         this.add(playlistURLField);

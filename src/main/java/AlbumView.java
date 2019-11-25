@@ -16,6 +16,7 @@ class AlbumView extends JPanel {
 
         albumURLField = new JTextArea();
         albumURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        albumURLField.setLineWrap(true);
 
         this.add(albumURLLabel);
         this.add(albumURLField);

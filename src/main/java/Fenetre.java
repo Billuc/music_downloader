@@ -15,6 +15,7 @@ class Fenetre extends JFrame {
         this.setResizable(false);
 
         this.controler = pControler;
+        this.addWindowListener(controler);
 
         laVue = new Vue(this, controler);
         this.add(laVue);

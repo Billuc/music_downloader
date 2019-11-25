@@ -16,6 +16,7 @@ class ArtistView extends JPanel {
 
         artistURLField = new JTextArea();
         artistURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        artistURLField.setLineWrap(true);
 
         this.add(artistURLLabel);
         this.add(artistURLField);

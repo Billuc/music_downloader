@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class OptionsPanel extends JPanel implements ActionListener {
     private JCheckBox withMetaDataCheckBox;
@@ -186,6 +188,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Dossier de sauvegarde des musiques");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setCurrentDirectory(new File(".."));
 
             // disable the "All files" option
             chooser.setAcceptAllFileFilterUsed(false);
