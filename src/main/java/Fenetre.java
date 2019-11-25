@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 class Fenetre extends JFrame {
-    Controler controler;
+    private Controler controler;
     Vue laVue;
 
     Fenetre(Controler pControler) {

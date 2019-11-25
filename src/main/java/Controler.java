@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Controler {
-    Fenetre fen;
+    private Fenetre fen;
 
     public Controler() {
         fen = new Fenetre(this);

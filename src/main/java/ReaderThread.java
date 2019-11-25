@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -24,7 +23,7 @@ public class ReaderThread extends Thread {
         } catch (IOException ie) {
             for (StackTraceElement ste : ie.getStackTrace()) {
                 //System.err.println(ste.toString());
-                sortie.appendMsg(ste.toString() + "\n");
+                sortie.appendMsg(ste.toString());
             }
         }
     }

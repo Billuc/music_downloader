@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
-public class Vue extends JPanel {
+class Vue extends JPanel {
     private final int SONG_PANEL_INDEX = 0;
     private final int SONG_URL_PANEL_INDEX = 1;
     private final int ALBUM_PANEL_INDEX = 2;
@@ -76,7 +73,7 @@ public class Vue extends JPanel {
         this.add(moreOptionsPanel, c);
     }
 
-    public String[] generateCommands() {
+    String[] generateCommands() {
         String dlOption = "";
         String options = "--overwrite skip ";
 
