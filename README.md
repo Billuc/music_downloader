@@ -5,5 +5,8 @@ Songs are downloaded from Youtube and metadata are automatically applied
 
 The music download part is done by ritiek's spotify-downloader : https://github.com/ritiek/spotify-downloader
 
+/!\ You have to download the application from the ritiek's repo (couldn't find how to include it in my app :'( ).
+You can do it thanks to the command : pip install spotdl (python and pip necessary)
 
 *The application is only an GUI.*
+*You need python and Java installed to run the app*
