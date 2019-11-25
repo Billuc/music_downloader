@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controler implements WindowListener {
+    static String DELETE_COMMAND;
+    final static String SPOTDL = "spotdl ";
+
     private Fenetre fen;
     private String commander;
     private String modifier;
@@ -22,10 +25,12 @@ public class Controler implements WindowListener {
         if ("Windows".equals(os)) {
             commander = "cmd";
             modifier = "/c";
+            DELETE_COMMAND = "del";
         }
         else if ("Linux".equals(os)) {
             commander = "bash";
             modifier = "-c";
+            DELETE_COMMAND = "rm";
         }
 
         processList = new ArrayList<>(3);
@@ -101,7 +106,7 @@ public class Controler implements WindowListener {
 
             //On supprime tracks.txt pour être sûr
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command(commander, modifier, "rm tracks.txt");
+            processBuilder.command(commander, modifier, DELETE_COMMAND + " tracks.txt");
 
             try {
                 processBuilder.start();

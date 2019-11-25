@@ -1,3 +1,3 @@
-export PATH=$PATH:./music_downloader/resources/spotdl/bin
-cd ./music_downloader_2/target/classes
+export PATH=$PATH:$(pwd)/resources/spotdl/bin/
+cd ./target/classes
 java Main

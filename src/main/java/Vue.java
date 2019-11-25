@@ -8,8 +8,6 @@ class Vue extends JPanel {
     private final int ARTIST_PANEL_INDEX = 3;
     private final int PLAYLIST_PANEL_INDEX = 4;
 
-    private final String SPOTDL = "spotdl ";
-
     private JTabbedPane modeSelector;
 
     private SongView dlFromSongPanel;
@@ -116,11 +114,11 @@ class Vue extends JPanel {
                 dlOption += " ";
             }
 
-            return new String[] { SPOTDL + dlOption,
-                                SPOTDL + options + "--list \"tracks.txt\"",
-                                "rm tracks.txt" };
+            return new String[] { Controler.SPOTDL + dlOption,
+                                Controler.SPOTDL + options + "--list \"tracks.txt\"",
+                                Controler.DELETE_COMMAND + " tracks.txt" };
         }
 
-        return new String[]{ SPOTDL + options + dlOption };
+        return new String[]{ Controler.SPOTDL + options + dlOption };
     }
 }
