@@ -13,7 +13,9 @@ class PlaylistView extends JPanel{
 
         playlistURLLabel = new JLabel("Playlist's Spotify URL : ");
         playlistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
+
         playlistURLField = new JTextArea();
+        playlistURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.add(playlistURLLabel);
         this.add(playlistURLField);

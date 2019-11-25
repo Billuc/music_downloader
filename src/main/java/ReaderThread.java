@@ -1,13 +1,14 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ReaderThread extends Thread {
     private BufferedReader reader;
-    private DownloadingSongDialog dialog;
+    private DownloadDialog sortie;
 
-    ReaderThread(BufferedReader pReader, DownloadingSongDialog pDialog) {
+    ReaderThread(BufferedReader pReader, DownloadDialog pSortie) {
         reader = pReader;
-        dialog = pDialog;
+        sortie = pSortie;
     }
 
     @Override
@@ -18,15 +19,13 @@ public class ReaderThread extends Thread {
             String line;
             while ((line = reader.readLine()) != null) {
                 //System.out.println(line);
-                dialog.writeLn(line);
+                sortie.appendMsg(line);
             }
         } catch (IOException ie) {
             for (StackTraceElement ste : ie.getStackTrace()) {
-                dialog.errorLn(ste.toString());
                 //System.err.println(ste.toString());
+                sortie.appendMsg(ste.toString() + "\n");
             }
-
-            //dialog.repaint();
         }
     }
 }

@@ -22,15 +22,16 @@ public class Vue extends JPanel {
     private ArtistView dlFromArtistPanel;
 
     private OptionsPanel moreOptionsPanel;
-    private String options;
 
-    private JFrame parent;
+    private Fenetre parent;
+    private Controler controler;
 
-    Vue(JFrame parent) {
+    Vue(Fenetre parent, Controler pControler) {
         super();
-        this.setBackground(new Color(255,255,255));
+        this.setBackground(new Color(211, 211, 211, 255));
 
         this.parent = parent;
+        this.controler = pControler;
 
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
@@ -59,12 +60,12 @@ public class Vue extends JPanel {
         c.gridy = 0;
         c.weightx = 1f;
         c.weighty = 1f;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(modeSelector, c);
     }
 
     private void initOtherOptionsPane(GridBagConstraints c) {
-        moreOptionsPanel = new OptionsPanel(this);
+        moreOptionsPanel = new OptionsPanel(this, controler);
 
         c.insets = new Insets(5,10,10,10);
         c.gridx = 0;
@@ -75,9 +76,9 @@ public class Vue extends JPanel {
         this.add(moreOptionsPanel, c);
     }
 
-    private String generateCommand() {
+    public String[] generateCommands() {
         String dlOption = "";
-        options = "--overwrite skip ";
+        String options = "--overwrite skip ";
 
         options += moreOptionsPanel.getOptions();
 
@@ -118,49 +119,11 @@ public class Vue extends JPanel {
                 dlOption += " ";
             }
 
-            return SPOTDL + dlOption;
+            return new String[] { SPOTDL + dlOption,
+                                SPOTDL + options + "--list \"tracks.txt\"",
+                                "rm tracks.txt" };
         }
 
-        return SPOTDL + options + dlOption;
-    }
-
-    private void executeCommand(String command) {
-        System.out.println(command);
-
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("bash", "-c", command);
-
-        try {
-            Process process = processBuilder.start();
-            DownloadingSongDialog dsd = new DownloadingSongDialog(parent, "Downloading song ...", false);
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            BufferedReader errorReader = new BufferedReader(
-                    new InputStreamReader(process.getErrorStream()));
-
-            new ReaderThread(reader, dsd).start();
-            new ReaderThread(errorReader, dsd).start();
-
-            int exitVal = process.waitFor();
-            if (exitVal != 0) {
-                JOptionPane.showMessageDialog(this, "The execution of the command was a failure !", "Failure!", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void download() {
-        executeCommand(generateCommand());
-
-        if (modeSelector.getSelectedIndex() != SONG_PANEL_INDEX) {
-            executeCommand(SPOTDL + options + "--list \"tracks.txt\"");
-            executeCommand("rm tracks.txt");
-        }
+        return new String[]{ SPOTDL + options + dlOption };
     }
 }

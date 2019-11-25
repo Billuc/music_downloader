@@ -13,7 +13,9 @@ class AlbumView extends JPanel {
 
         albumURLLabel = new JLabel("Album's Spotify URL : ");
         albumURLLabel.setHorizontalTextPosition(JLabel.CENTER);
+
         albumURLField = new JTextArea();
+        albumURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.add(albumURLLabel);
         this.add(albumURLField);

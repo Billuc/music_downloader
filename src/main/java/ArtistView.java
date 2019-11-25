@@ -13,7 +13,9 @@ class ArtistView extends JPanel {
 
         artistURLLabel = new JLabel("<html>Artist's Spotify URL : <br/>(all albums will be downloaded)</html>");
         artistURLLabel.setHorizontalTextPosition(JLabel.CENTER);
+
         artistURLField = new JTextArea();
+        artistURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.add(artistURLLabel);
         this.add(artistURLField);

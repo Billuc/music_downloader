@@ -18,13 +18,15 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private JButton downloadButton;
 
     private Vue parent;
+    private Controler controleur;
 
-    OptionsPanel(Vue parent) {
+    OptionsPanel(Vue parent, Controler pControler) {
         super();
-        this.setBackground(new Color(180,180,180));
+        this.setBackground(new Color(201, 255, 89, 96));
         this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.parent = parent;
+        this.controleur = pControler;
 
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
@@ -54,6 +56,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         this.add(songFolderLabel);
 
         songFolderField = new JTextArea();
+        songFolderField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         c.gridx = 1;
         c.gridy = 0;
@@ -159,6 +162,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private void initDownloadButton(GridBagLayout layout, GridBagConstraints c) {
         downloadButton = new JButton("Download");
         downloadButton.addActionListener(this);
+        downloadButton.setBackground(Color.RED);
 
         c.gridx = 4;
         c.gridy = 0;
@@ -176,7 +180,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == downloadButton) {
-            parent.download();
+            new Thread(() -> controleur.download()).start();
         }
         else if (actionEvent.getSource() == folderChooserButton) {
             JFileChooser chooser = new JFileChooser();

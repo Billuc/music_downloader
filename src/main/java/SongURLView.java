@@ -13,7 +13,9 @@ class SongURLView extends JPanel {
 
         songURLLabel = new JLabel("Song's Spotify URL : ");
         songURLLabel.setHorizontalTextPosition(JLabel.CENTER);
+
         songURLField = new JTextArea();
+        songURLField.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
         this.add(songURLLabel);
         this.add(songURLField);
