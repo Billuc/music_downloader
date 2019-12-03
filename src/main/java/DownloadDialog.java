@@ -60,4 +60,9 @@ public class DownloadDialog extends JFrame {
             downloadingDisplayer.setCaretPosition(downloadingDisplayer.getText().length());
         }
     }
+
+    public void clear() {
+        infosDisplayer.setText("");
+        downloadingDisplayer.setText("");
+    }
 }

@@ -115,6 +115,7 @@ public class Controler implements WindowListener {
                 JOptionPane.showMessageDialog(fen, "Error while deleting music_downloader_2/tracks.txt\nDelete it manually to avoid problems during the next download !", "IOException thrown !", JOptionPane.ERROR_MESSAGE);
             }
 
+            dialog.clear();
             fen.setVisible(true);
         }
     }
