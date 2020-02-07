@@ -1,5 +1,7 @@
 # music_downloader
 
+##/!\ A bit outdated ! The version I have on my server is better (but it's not online :/ )
+
 A Java application that provides an interface to download songs, albums or playlists.
 Songs are downloaded from Youtube and metadata are automatically applied
 
